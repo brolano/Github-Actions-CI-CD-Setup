@@ -1,7 +1,7 @@
 name: Run Cypress Tests
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
 
