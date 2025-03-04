@@ -16,7 +16,7 @@ A typescript program that runs test cases to ensure that all code integrations a
 npm i && npm run build && npm run develop 
 
 ## Usage
-To swiftly and quickly build a vehicle.
+To be safely efficient of integrating new code from develop to main branch.
 
 ## Deployed Site
 
