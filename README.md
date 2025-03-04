@@ -18,9 +18,9 @@ npm i && npm run build && npm run develop
 ## Usage
 To be safely efficient of integrating new code from develop to main branch.
 
-## Deployed Site
+## Deployed Site: https://github-actions-ci-cd-setup-hgk3.onrender.com
 
-https://github-actions-ci-cd-setup-hgk3.onrender.com
+![Deployed Link](screenshot.png)
 
 
 
