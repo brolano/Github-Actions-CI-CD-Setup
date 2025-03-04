@@ -9,16 +9,47 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Read and parse the JSON file
-const pythonQuestions = JSON.parse(
-  fs.readFileSync(path.join(__dirname, './pythonQuestions.json'), 'utf8')
-);
+// Log paths to debug
+console.log('Current __dirname:', __dirname);
+const jsonPath = path.join(__dirname, './pythonQuestions.json');
+console.log('Trying to read from:', jsonPath);
 
-db.once('open', async () => {
-  await cleanDB('Question', 'questions');
+// Check if file exists before reading
+if (fs.existsSync(jsonPath)) {
+  console.log('File exists!');
+  // Read and parse the JSON file
+  const pythonQuestions = JSON.parse(
+    fs.readFileSync(jsonPath, 'utf8')
+  );
 
-  await Question.insertMany(pythonQuestions);
-
-  console.log('Questions seeded!');
-  process.exit(0);
-});
+  db.once('open', async () => {
+    await cleanDB('Question', 'questions');
+    await Question.insertMany(pythonQuestions);
+    console.log('Questions seeded!');
+    process.exit(0);
+  });
+} else {
+  console.error('File does not exist at path:', jsonPath);
+  
+  // Try to find the file in nearby directories
+  console.log('Searching in parent directory...');
+  const parentPath = path.join(__dirname, '../pythonQuestions.json');
+  console.log('Checking:', parentPath);
+  
+  if (fs.existsSync(parentPath)) {
+    console.log('Found in parent directory!');
+    const pythonQuestions = JSON.parse(
+      fs.readFileSync(parentPath, 'utf8')
+    );
+    
+    db.once('open', async () => {
+      await cleanDB('Question', 'questions');
+      await Question.insertMany(pythonQuestions);
+      console.log('Questions seeded!');
+      process.exit(0);
+    });
+  } else {
+    console.error('Could not find pythonQuestions.json in expected locations');
+    process.exit(1);
+  }
+}
